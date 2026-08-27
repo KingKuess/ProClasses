@@ -1,28 +1,41 @@
-# ProClasses guide site
+# ProClasses guide site + server MOTD
 
-Single-file static site (`index.html`, no build step, no dependencies) in the
-style of https://cashmate.github.io/classmod/ — for The Kungle's ProClasses.
+Two files, no build step:
+
+- `index.html` — the dense one-page web guide (GitHub Pages).
+- `MOTD.md` — the in-game Message of the Day. Mordhau no longer renders HTML
+  MOTDs; it fetches a **Markdown** file from a URL and supports only headings,
+  bold, italics, links, numbered and bulleted lists. Keep it ASCII and simple.
+
+## Server MOTD
+
+In the server's `Game.ini`, under `[/Script/Mordhau.MordhauGameMode]`:
+
+```ini
+MOTDURL="https://raw.githubusercontent.com/KingKuess/ProClasses/main/MOTD.md"
+```
+
+(quotes included). Restart the server after adding it. GitHub's raw URLs are
+cached for a few minutes, so edits to `MOTD.md` show up shortly after a push.
 
 ## Editing
 
-Everything on the page is rendered from the data block at the top of the
-`<script>` in `index.html` (between `EDIT THIS BLOCK` / `END OF EDIT BLOCK`):
+`index.html` renders everything from the data block at the top of its
+`<script>` (between `EDIT THIS BLOCK` / `END OF EDIT BLOCK`):
 
-- `SITE` — server name, version pill, mod.io link, Discord invite (leave empty
-  to hide the button).
+- `SITE` — server name, version/date stamp, mod.io link, Discord invite (empty
+  hides the link).
 - `CLASSES` — the three kits (tiers, perks, gear, one-line note).
-- `DEFAULT_CLASS` — the fallback class text.
+- `DEFAULT_CLASS` — the fallback class line.
 - `WEAPONS` — one line per roster weapon: name, point cost, class key, and
-  `banned: true` for anything currently in the server's `[RemovalMod]` list
-  (rendered greyed-out with a badge). Keep this in sync with `CLASSES.md`.
+  `banned: true` for anything currently in the server's `[RemovalMod]` list.
 - `ARMOR` — the replacement piece per tier/slot.
 
-Open `index.html` in a browser to preview; nothing needs to be served.
+`MOTD.md` is plain text — update it by hand to match (weapon lists, banned
+notes, perks, armor, version line).
 
-## Publishing on GitHub Pages
+## Publishing (GitHub Pages)
 
-1. Create a public repo (e.g. `proclasses`) and put `index.html` at its root.
-2. Repo **Settings → Pages → Build and deployment**: Source "Deploy from a
-   branch", branch `main`, folder `/ (root)`. Save.
-3. After a minute the site is live at `https://<your-user>.github.io/proclasses/`.
-4. Updates: edit `index.html`, commit, push — Pages redeploys automatically.
+Repo **Settings → Pages → Build and deployment**: Source "Deploy from a
+branch", branch `main`, folder `/ (root)`. The site is served at
+`https://kingkuess.github.io/ProClasses/`; every push to `main` redeploys.
