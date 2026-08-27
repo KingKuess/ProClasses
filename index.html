@@ -100,7 +100,7 @@
 
   /* ---------- class ledger ---------- */
   .ledger { display: grid; grid-template-columns: repeat(3, 1fr); }
-  .cls { border-right: 1px solid var(--rule); padding: 0 0 8px; min-width: 0; }
+  .cls { border-right: 1px solid var(--rule); padding: 0 0 6px; min-width: 0; }
   .cls:last-child { border-right: 0; }
   .cls-head {
     color: #fff;
@@ -146,33 +146,32 @@
   .cls.support .tag { border-color: rgba(79,146,207,0.45); }
   .cls.rat .tag { border-color: rgba(148,184,76,0.45); }
   .cls.vanguard .tag { border-color: rgba(217,90,78,0.45); }
-  .weps { padding: 6px 12px 0; }
+
+  /* weapons: compact pills, alphabetical */
+  .weps { padding: 8px 12px 4px; display: flex; flex-wrap: wrap; gap: 5px; }
   .wep {
-    display: flex;
+    display: inline-flex;
     align-items: baseline;
-    gap: 6px;
-    padding: 2px 4px;
-    margin: 0 -4px;
-    font-size: 13px;
+    gap: 5px;
+    padding: 2px 9px;
+    border: 1px solid #353d46;
+    border-left-width: 3px;
     border-radius: 3px;
+    background: #1f252c;
+    font-size: 12.5px;
+    color: #f2f1ec;
+    white-space: nowrap;
   }
-  .wep:hover { background: rgba(255,255,255,0.04); }
-  .wep .nm { white-space: nowrap; color: #f2f1ec; }
-  .wep .lead { flex: 1; border-bottom: 1px dotted #3a424b; transform: translateY(-3px); }
-  .wep .pt { font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 12px; white-space: nowrap; }
-  .cls.support .wep .pt { color: var(--support); }
-  .cls.rat .wep .pt { color: var(--rat); }
-  .cls.vanguard .wep .pt { color: var(--vanguard); }
+  .cls.support .wep { border-left-color: var(--support); }
+  .cls.rat .wep { border-left-color: var(--rat); }
+  .cls.vanguard .wep { border-left-color: var(--vanguard); }
+  .wep.banned { border-style: dashed; border-left-color: rgba(224,102,92,0.6) !important; background: transparent; }
   .wep.banned .nm { text-decoration: line-through; color: var(--ink-3); }
-  .wep.banned .pt { color: var(--ink-3) !important; }
   .wep .ban {
-    font-size: 9.5px;
+    font-size: 9px;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--danger);
-    border: 1px solid rgba(224,102,92,0.6);
-    padding: 0 4px;
-    border-radius: 2px;
   }
 
   /* ---------- lower deck ---------- */
@@ -227,8 +226,6 @@
   .foot a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink-3); margin-right: 14px; }
   .foot a:hover { color: var(--support); border-color: var(--support); }
 
-  /* The in-game MOTD panel is ~880px wide: keep three columns until it is
-     genuinely narrow (phones), then stack. */
   @media (max-width: 720px) {
     .mast { grid-template-columns: 1fr; }
     .stamp { justify-self: start; transform: none; }
@@ -256,10 +253,9 @@
     <div class="stamp">Classes v0.0.4<br>2026-08-26</div>
   </div>
 
-  <!-- ============ CLASS ROSTER — one .wep line per weapon, sorted by cost.
-       Banned on the server right now: add class "banned" and the badge span.
-       Example banned row:
-       <div class="wep banned"><span class="nm">Rapier</span><span class="ban">banned</span><span class="lead"></span><span class="pt">12 pts</span></div>
+  <!-- ============ CLASS ROSTER — one .wep pill per weapon, alphabetical.
+       Banned on the server right now: add class "banned" and the badge span:
+       <span class="wep banned"><span class="nm">Rapier</span><span class="ban">banned</span></span>
   ============ -->
   <div class="ledger">
 
@@ -268,15 +264,15 @@
       <div class="kit">
         <div><span class="lab">Perks</span><span class="tag">Brawler</span><span class="tag">Stun</span><span class="tag">Acrobat</span></div>
         <div><span class="lab">Gear</span><span class="tag">none</span></div>
-        <div class="note">Cost-35 polearms and greatswords: strong weapon, light armor.</div>
+        <div class="note">Polearms and greatswords: strong weapon, light armor.</div>
       </div>
       <div class="weps">
-        <div class="wep"><span class="nm">Zweihander</span><span class="lead"></span><span class="pt">35 pts</span></div>
-        <div class="wep"><span class="nm">Halberd</span><span class="lead"></span><span class="pt">35 pts</span></div>
-        <div class="wep"><span class="nm">Spear</span><span class="lead"></span><span class="pt">35 pts</span></div>
-        <div class="wep"><span class="nm">Polehammer</span><span class="lead"></span><span class="pt">35 pts</span></div>
-        <div class="wep"><span class="nm">Partisan</span><span class="lead"></span><span class="pt">21 pts</span></div>
-        <div class="wep"><span class="nm">Billhook</span><span class="lead"></span><span class="pt">14 pts</span></div>
+        <span class="wep"><span class="nm">Billhook</span></span>
+        <span class="wep"><span class="nm">Halberd</span></span>
+        <span class="wep"><span class="nm">Partisan</span></span>
+        <span class="wep"><span class="nm">Polehammer</span></span>
+        <span class="wep"><span class="nm">Spear</span></span>
+        <span class="wep"><span class="nm">Zweihander</span></span>
       </div>
     </div>
 
@@ -288,15 +284,15 @@
         <div class="note">One-handers and the eveningstar: fast skirmisher with a firepot.</div>
       </div>
       <div class="weps">
-        <div class="wep"><span class="nm">Eveningstar</span><span class="lead"></span><span class="pt">21 pts</span></div>
-        <div class="wep"><span class="nm">Bastard Sword</span><span class="lead"></span><span class="pt">12 pts</span></div>
-        <div class="wep banned"><span class="nm">Rapier</span><span class="ban">banned</span><span class="lead"></span><span class="pt">12 pts</span></div>
-        <div class="wep"><span class="nm">Mace</span><span class="lead"></span><span class="pt">11 pts</span></div>
-        <div class="wep banned"><span class="nm">Short Spear</span><span class="ban">banned</span><span class="lead"></span><span class="pt">9 pts</span></div>
-        <div class="wep"><span class="nm">Heavy Handaxe</span><span class="lead"></span><span class="pt">9 pts</span></div>
-        <div class="wep banned"><span class="nm">Falchion</span><span class="ban">banned</span><span class="lead"></span><span class="pt">8 pts</span></div>
-        <div class="wep"><span class="nm">Arming Sword</span><span class="lead"></span><span class="pt">6 pts</span></div>
-        <div class="wep"><span class="nm">Warhammer</span><span class="lead"></span><span class="pt">4 pts</span></div>
+        <span class="wep"><span class="nm">Arming Sword</span></span>
+        <span class="wep"><span class="nm">Bastard Sword</span></span>
+        <span class="wep"><span class="nm">Eveningstar</span></span>
+        <span class="wep banned"><span class="nm">Falchion</span><span class="ban">banned</span></span>
+        <span class="wep"><span class="nm">Heavy Handaxe</span></span>
+        <span class="wep"><span class="nm">Mace</span></span>
+        <span class="wep banned"><span class="nm">Rapier</span><span class="ban">banned</span></span>
+        <span class="wep banned"><span class="nm">Short Spear</span><span class="ban">banned</span></span>
+        <span class="wep"><span class="nm">Warhammer</span></span>
       </div>
     </div>
 
@@ -308,18 +304,18 @@
         <div class="note">Everything else: full plate.</div>
       </div>
       <div class="weps">
-        <div class="wep"><span class="nm">Bardiche</span><span class="lead"></span><span class="pt">24 pts</span></div>
-        <div class="wep"><span class="nm">Greatsword</span><span class="lead"></span><span class="pt">21 pts</span></div>
-        <div class="wep"><span class="nm">Maul</span><span class="lead"></span><span class="pt">21 pts</span></div>
-        <div class="wep"><span class="nm">Executioner's Sword</span><span class="lead"></span><span class="pt">21 pts</span></div>
-        <div class="wep"><span class="nm">Estoc</span><span class="lead"></span><span class="pt">18 pts</span></div>
-        <div class="wep"><span class="nm">Falx</span><span class="lead"></span><span class="pt">18 pts</span></div>
-        <div class="wep"><span class="nm">Poleaxe</span><span class="lead"></span><span class="pt">18 pts</span></div>
-        <div class="wep"><span class="nm">War Axe</span><span class="lead"></span><span class="pt">15 pts</span></div>
-        <div class="wep"><span class="nm">Battle Axe</span><span class="lead"></span><span class="pt">15 pts</span></div>
-        <div class="wep"><span class="nm">Messer</span><span class="lead"></span><span class="pt">15 pts</span></div>
-        <div class="wep"><span class="nm">Longsword</span><span class="lead"></span><span class="pt">14 pts</span></div>
-        <div class="wep banned"><span class="nm">Quarterstaff</span><span class="ban">banned</span><span class="lead"></span><span class="pt">2 pts</span></div>
+        <span class="wep"><span class="nm">Bardiche</span></span>
+        <span class="wep"><span class="nm">Battle Axe</span></span>
+        <span class="wep"><span class="nm">Estoc</span></span>
+        <span class="wep"><span class="nm">Executioner's Sword</span></span>
+        <span class="wep"><span class="nm">Falx</span></span>
+        <span class="wep"><span class="nm">Greatsword</span></span>
+        <span class="wep"><span class="nm">Longsword</span></span>
+        <span class="wep"><span class="nm">Maul</span></span>
+        <span class="wep"><span class="nm">Messer</span></span>
+        <span class="wep"><span class="nm">Poleaxe</span></span>
+        <span class="wep banned"><span class="nm">Quarterstaff</span><span class="ban">banned</span></span>
+        <span class="wep"><span class="nm">War Axe</span></span>
       </div>
     </div>
 
@@ -336,7 +332,7 @@
           <tr><td class="t">T3</td><td>Flat Templar</td><td>Crude Cuirass</td><td>Crude Chausses</td></tr>
         </tbody>
       </table>
-      <p class="foot">Ready-made loadouts are added to your armory under <b>Server Classes</b> when you join — named like <i>1/3/1 Zweihander Support</i>. Costs shown are the server's weapon point costs.</p>
+      <p class="foot">Ready-made loadouts are added to your armory under <b>Server Classes</b> when you join — named like <i>1/3/1 Zweihander Support</i>.</p>
     </div>
     <div class="panel">
       <h2><b>02</b>How it's applied</h2>
