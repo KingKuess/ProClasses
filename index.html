@@ -32,7 +32,7 @@
     font-family: var(--font);
     font-size: 13px;
     line-height: 1.35;
-    padding: 14px;
+    padding: 10px;
     background-image:
       radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79,146,207,0.12), transparent 60%),
       repeating-linear-gradient(135deg, transparent 0 9px, rgba(255,255,255,0.018) 9px 10px);
@@ -52,9 +52,9 @@
   .mast {
     display: grid;
     grid-template-columns: auto 1fr auto;
-    gap: 18px;
+    gap: 14px;
     align-items: center;
-    padding: 12px 18px;
+    padding: 10px 14px;
     border-bottom: 1px solid var(--rule);
     background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
   }
@@ -68,7 +68,7 @@
     margin-bottom: 4px;
   }
   .mast .title strong {
-    font-size: 30px;
+    font-size: 28px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     font-weight: 700;
@@ -78,7 +78,7 @@
   .rules-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 14px;
+    gap: 4px 12px;
     font-size: 12.5px;
     color: var(--ink-2);
   }
@@ -100,11 +100,11 @@
 
   /* ---------- class ledger ---------- */
   .ledger { display: grid; grid-template-columns: repeat(3, 1fr); }
-  .cls { border-right: 1px solid var(--rule); padding: 0 0 8px; }
+  .cls { border-right: 1px solid var(--rule); padding: 0 0 8px; min-width: 0; }
   .cls:last-child { border-right: 0; }
   .cls-head {
     color: #fff;
-    padding: 9px 14px 8px;
+    padding: 8px 12px 7px;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -117,7 +117,7 @@
   .cls.rat .cls-head { background: linear-gradient(135deg, var(--rat), var(--rat-d)); }
   .cls.vanguard .cls-head { background: linear-gradient(135deg, var(--vanguard), var(--vanguard-d)); }
   .kit {
-    padding: 8px 14px 6px;
+    padding: 8px 12px 6px;
     border-bottom: 1px solid var(--rule-2);
     font-size: 12px;
     color: var(--ink-2);
@@ -146,7 +146,7 @@
   .cls.support .tag { border-color: rgba(79,146,207,0.45); }
   .cls.rat .tag { border-color: rgba(148,184,76,0.45); }
   .cls.vanguard .tag { border-color: rgba(217,90,78,0.45); }
-  .weps { padding: 6px 14px 0; }
+  .weps { padding: 6px 12px 0; }
   .wep {
     display: flex;
     align-items: baseline;
@@ -182,7 +182,7 @@
     border-top: 1px solid var(--rule);
     background: rgba(0,0,0,0.18);
   }
-  .panel { padding: 10px 14px 12px; }
+  .panel { padding: 10px 12px 12px; min-width: 0; }
   .panel + .panel { border-left: 1px solid var(--rule); }
   .panel h2 {
     margin: 0 0 6px;
@@ -192,6 +192,7 @@
     color: var(--ink-3);
   }
   .panel h2 b { color: var(--support); margin-right: 6px; }
+  .panel h2 span { letter-spacing: 0; text-transform: none; }
   table.armor { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   table.armor th, table.armor td { text-align: left; padding: 3px 6px 3px 0; border-bottom: 1px solid var(--rule-2); }
   table.armor th { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
@@ -218,7 +219,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 6px 14px;
-    padding: 8px 18px;
+    padding: 8px 14px;
     border-top: 1px solid var(--rule);
     font-size: 11.5px;
     color: var(--ink-3);
@@ -226,7 +227,9 @@
   .foot a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink-3); margin-right: 14px; }
   .foot a:hover { color: var(--support); border-color: var(--support); }
 
-  @media (max-width: 900px) {
+  /* The in-game MOTD panel is ~880px wide: keep three columns until it is
+     genuinely narrow (phones), then stack. */
+  @media (max-width: 720px) {
     .mast { grid-template-columns: 1fr; }
     .stamp { justify-self: start; transform: none; }
     .ledger { grid-template-columns: 1fr; }
@@ -238,9 +241,10 @@
 </head>
 <body>
 <div class="sheet">
+
   <div class="mast">
     <div class="title">
-      <small id="server-name">The Kungle</small>
+      <small>The Kungle</small>
       <strong>ProClasses</strong>
     </div>
     <div class="rules-line">
@@ -249,17 +253,88 @@
       <span>Right-tier armor you already wear is <strong>kept</strong></span>
       <span>Off-roster weapon, fists or nothing → <strong>3/3/3 + greatsword</strong></span>
     </div>
-    <div class="stamp" id="version-pill"></div>
+    <div class="stamp">Classes v0.0.4<br>2026-08-26</div>
   </div>
 
-  <div class="ledger" id="roster"></div>
+  <!-- ============ CLASS ROSTER — one .wep line per weapon, sorted by cost.
+       Banned on the server right now: add class "banned" and the badge span.
+       Example banned row:
+       <div class="wep banned"><span class="nm">Rapier</span><span class="ban">banned</span><span class="lead"></span><span class="pt">12 pts</span></div>
+  ============ -->
+  <div class="ledger">
+
+    <div class="cls support">
+      <div class="cls-head"><span class="n">Support</span><span class="t">1/3/1<small>H/C/L</small></span></div>
+      <div class="kit">
+        <div><span class="lab">Perks</span><span class="tag">Brawler</span><span class="tag">Stun</span><span class="tag">Acrobat</span></div>
+        <div><span class="lab">Gear</span><span class="tag">none</span></div>
+        <div class="note">Cost-35 polearms and greatswords: strong weapon, light armor.</div>
+      </div>
+      <div class="weps">
+        <div class="wep"><span class="nm">Zweihander</span><span class="lead"></span><span class="pt">35 pts</span></div>
+        <div class="wep"><span class="nm">Halberd</span><span class="lead"></span><span class="pt">35 pts</span></div>
+        <div class="wep"><span class="nm">Spear</span><span class="lead"></span><span class="pt">35 pts</span></div>
+        <div class="wep"><span class="nm">Polehammer</span><span class="lead"></span><span class="pt">35 pts</span></div>
+        <div class="wep"><span class="nm">Partisan</span><span class="lead"></span><span class="pt">21 pts</span></div>
+        <div class="wep"><span class="nm">Billhook</span><span class="lead"></span><span class="pt">14 pts</span></div>
+      </div>
+    </div>
+
+    <div class="cls rat">
+      <div class="cls-head"><span class="n">Rat</span><span class="t">2/1/1<small>H/C/L</small></span></div>
+      <div class="kit">
+        <div><span class="lab">Perks</span><span class="tag">Brawler</span><span class="tag">Stun</span><span class="tag">Second Wind</span><span class="tag">Dodge</span><span class="tag">Acrobat</span></div>
+        <div><span class="lab">Gear</span><span class="tag">Firepot</span></div>
+        <div class="note">One-handers and the eveningstar: fast skirmisher with a firepot.</div>
+      </div>
+      <div class="weps">
+        <div class="wep"><span class="nm">Eveningstar</span><span class="lead"></span><span class="pt">21 pts</span></div>
+        <div class="wep"><span class="nm">Bastard Sword</span><span class="lead"></span><span class="pt">12 pts</span></div>
+        <div class="wep banned"><span class="nm">Rapier</span><span class="ban">banned</span><span class="lead"></span><span class="pt">12 pts</span></div>
+        <div class="wep"><span class="nm">Mace</span><span class="lead"></span><span class="pt">11 pts</span></div>
+        <div class="wep banned"><span class="nm">Short Spear</span><span class="ban">banned</span><span class="lead"></span><span class="pt">9 pts</span></div>
+        <div class="wep"><span class="nm">Heavy Handaxe</span><span class="lead"></span><span class="pt">9 pts</span></div>
+        <div class="wep banned"><span class="nm">Falchion</span><span class="ban">banned</span><span class="lead"></span><span class="pt">8 pts</span></div>
+        <div class="wep"><span class="nm">Arming Sword</span><span class="lead"></span><span class="pt">6 pts</span></div>
+        <div class="wep"><span class="nm">Warhammer</span><span class="lead"></span><span class="pt">4 pts</span></div>
+      </div>
+    </div>
+
+    <div class="cls vanguard">
+      <div class="cls-head"><span class="n">Vanguard</span><span class="t">3/3/3<small>H/C/L</small></span></div>
+      <div class="kit">
+        <div><span class="lab">Perks</span><span class="tag">Brawler</span><span class="tag">Stun</span></div>
+        <div><span class="lab">Gear</span><span class="tag">none</span></div>
+        <div class="note">Everything else: full plate.</div>
+      </div>
+      <div class="weps">
+        <div class="wep"><span class="nm">Bardiche</span><span class="lead"></span><span class="pt">24 pts</span></div>
+        <div class="wep"><span class="nm">Greatsword</span><span class="lead"></span><span class="pt">21 pts</span></div>
+        <div class="wep"><span class="nm">Maul</span><span class="lead"></span><span class="pt">21 pts</span></div>
+        <div class="wep"><span class="nm">Executioner's Sword</span><span class="lead"></span><span class="pt">21 pts</span></div>
+        <div class="wep"><span class="nm">Estoc</span><span class="lead"></span><span class="pt">18 pts</span></div>
+        <div class="wep"><span class="nm">Falx</span><span class="lead"></span><span class="pt">18 pts</span></div>
+        <div class="wep"><span class="nm">Poleaxe</span><span class="lead"></span><span class="pt">18 pts</span></div>
+        <div class="wep"><span class="nm">War Axe</span><span class="lead"></span><span class="pt">15 pts</span></div>
+        <div class="wep"><span class="nm">Battle Axe</span><span class="lead"></span><span class="pt">15 pts</span></div>
+        <div class="wep"><span class="nm">Messer</span><span class="lead"></span><span class="pt">15 pts</span></div>
+        <div class="wep"><span class="nm">Longsword</span><span class="lead"></span><span class="pt">14 pts</span></div>
+        <div class="wep banned"><span class="nm">Quarterstaff</span><span class="ban">banned</span><span class="lead"></span><span class="pt">2 pts</span></div>
+      </div>
+    </div>
+
+  </div>
 
   <div class="deck">
     <div class="panel">
-      <h2><b>01</b>Armor you get <span style="letter-spacing:0;text-transform:none;color:var(--ink-3)">— only for slots at the wrong tier</span></h2>
-      <table class="armor" id="armor-table">
+      <h2><b>01</b>Armor you get <span>— only for slots at the wrong tier</span></h2>
+      <table class="armor">
         <thead><tr><th>Tier</th><th>Head</th><th>Chest</th><th>Legs</th></tr></thead>
-        <tbody></tbody>
+        <tbody>
+          <tr><td class="t">T1</td><td>Peasant Hat</td><td>Coat of Plates (leather)</td><td>Rider's Hosen</td></tr>
+          <tr><td class="t">T2</td><td>Eisenhut</td><td>Chainmail Shirt</td><td>Calf Guard Hosen</td></tr>
+          <tr><td class="t">T3</td><td>Flat Templar</td><td>Crude Cuirass</td><td>Crude Chausses</td></tr>
+        </tbody>
       </table>
       <p class="foot">Ready-made loadouts are added to your armory under <b>Server Classes</b> when you join — named like <i>1/3/1 Zweihander Support</i>. Costs shown are the server's weapon point costs.</p>
     </div>
@@ -272,133 +347,20 @@
         <li><b>Perks are replaced</b> by the class perks; carried secondaries are removed (Rat gets a firepot).</li>
         <li><b>Armor</b> is set per slot to the class tier — your own right-tier pieces stay, so your look survives.</li>
       </ol>
-      <div class="default-line" id="default-text"></div>
+      <div class="default-line"><b>Default class</b> — anything not listed, fists, or no weapon: armor <b>3/3/3</b>, perks Brawler + Stun, weapon swapped for a <b>Greatsword</b>.</div>
     </div>
   </div>
 
   <div class="foot">
     <div>
-      <a id="modio-link" href="#" target="_blank" rel="noopener">mod.io</a>
-      <a id="discord-link" href="#" target="_blank" rel="noopener" style="display:none">Discord</a>
+      <a href="https://mod.io/g/mordhau/m/proweaponsproclasses" target="_blank" rel="noopener">mod.io</a>
+      <!-- Discord: uncomment and paste your invite
+      <a href="https://discord.gg/XXXXXXX" target="_blank" rel="noopener">Discord</a>
+      -->
     </div>
-    <div id="footer"></div>
+    <div>ProWeapons / ProClasses · The Kungle · Classes v0.0.4 · 2026-08-26</div>
   </div>
+
 </div>
-
-<script>
-  // ===================== EDIT THIS BLOCK =====================
-  const SITE = {
-    serverName: "The Kungle",
-    version: "Classes v0.0.4",
-    updated: "2026-08-26",
-    modio: "https://mod.io/g/mordhau/m/proweaponsproclasses",
-    discord: ""   // paste an invite link to show the Discord link
-  };
-
-  const CLASSES = {
-    support:  { label: "Support",  tiers: "1/3/1", perks: ["Brawler", "Stun", "Acrobat"],
-                gear: [], note: "Cost-35 polearms and greatswords: strong weapon, light armor." },
-    rat:      { label: "Rat",      tiers: "2/1/1", perks: ["Brawler", "Stun", "Second Wind", "Dodge", "Acrobat"],
-                gear: ["Firepot"], note: "One-handers and the eveningstar: fast skirmisher with a firepot." },
-    vanguard: { label: "Vanguard", tiers: "3/3/3", perks: ["Brawler", "Stun"],
-                gear: [], note: "Everything else: full plate." }
-  };
-
-  const DEFAULT_CLASS = { tiers: "3/3/3", perks: ["Brawler", "Stun"], weapon: "Greatsword" };
-
-  // banned: true = currently in the server's [RemovalMod] list
-  const WEAPONS = [
-    { name: "Zweihander",    cost: 35, cls: "support" },
-    { name: "Halberd",       cost: 35, cls: "support" },
-    { name: "Spear",         cost: 35, cls: "support" },
-    { name: "Polehammer",    cost: 35, cls: "support" },
-    { name: "Partisan",      cost: 21, cls: "support" },
-    { name: "Billhook",      cost: 14, cls: "support" },
-
-    { name: "Eveningstar",   cost: 21, cls: "rat" },
-    { name: "Bastard Sword", cost: 12, cls: "rat" },
-    { name: "Rapier",        cost: 12, cls: "rat", banned: true },
-    { name: "Mace",          cost: 11, cls: "rat" },
-    { name: "Short Spear",   cost: 9,  cls: "rat", banned: true },
-    { name: "Heavy Handaxe", cost: 9,  cls: "rat" },
-    { name: "Falchion",      cost: 8,  cls: "rat", banned: true },
-    { name: "Arming Sword",  cost: 6,  cls: "rat" },
-    { name: "Warhammer",     cost: 4,  cls: "rat" },
-
-    { name: "Bardiche",      cost: 24, cls: "vanguard" },
-    { name: "Greatsword",    cost: 21, cls: "vanguard" },
-    { name: "Maul",          cost: 21, cls: "vanguard" },
-    { name: "Executioner's Sword", cost: 21, cls: "vanguard" },
-    { name: "Estoc",         cost: 18, cls: "vanguard" },
-    { name: "Falx",          cost: 18, cls: "vanguard" },
-    { name: "Poleaxe",       cost: 18, cls: "vanguard" },
-    { name: "War Axe",       cost: 15, cls: "vanguard" },
-    { name: "Battle Axe",    cost: 15, cls: "vanguard" },
-    { name: "Messer",        cost: 15, cls: "vanguard" },
-    { name: "Longsword",     cost: 14, cls: "vanguard" },
-    { name: "Quarterstaff",  cost: 2,  cls: "vanguard", banned: true }
-  ];
-
-  const ARMOR = {
-    1: ["Peasant Hat",  "Coat of Plates (leather)", "Rider's Hosen"],
-    2: ["Eisenhut",     "Chainmail Shirt",          "Calf Guard Hosen"],
-    3: ["Flat Templar", "Crude Cuirass",            "Crude Chausses"]
-  };
-  // =================== END OF EDIT BLOCK =====================
-
-  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
-  function tags(list) { return list.length ? list.map(p => '<span class="tag">' + esc(p) + '</span>').join("") : '<span class="tag">none</span>'; }
-
-  function render() {
-    document.getElementById("server-name").textContent = SITE.serverName;
-    document.getElementById("version-pill").innerHTML = esc(SITE.version) + "<br>" + esc(SITE.updated);
-    document.title = "ProClasses — " + SITE.serverName;
-
-    const roster = document.getElementById("roster");
-    roster.innerHTML = "";
-    for (const key of Object.keys(CLASSES)) {
-      const c = CLASSES[key];
-      const weapons = WEAPONS.filter(w => w.cls === key).sort((a, b) => b.cost - a.cost);
-      let html = '<div class="cls-head"><span class="n">' + esc(c.label) + '</span>'
-               + '<span class="t">' + esc(c.tiers) + '<small>H/C/L</small></span></div>';
-      html += '<div class="kit">'
-            + '<div><span class="lab">Perks</span>' + tags(c.perks) + '</div>'
-            + '<div><span class="lab">Gear</span>' + tags(c.gear) + '</div>'
-            + (c.note ? '<div class="note">' + esc(c.note) + '</div>' : '')
-            + '</div>';
-      html += '<div class="weps">';
-      for (const w of weapons) {
-        html += '<div class="wep' + (w.banned ? ' banned' : '') + '" title="' + esc(c.tiers + ' ' + w.name + ' ' + c.label) + '">'
-              + '<span class="nm">' + esc(w.name) + '</span>'
-              + (w.banned ? '<span class="ban">banned</span>' : '')
-              + '<span class="lead"></span>'
-              + '<span class="pt">' + w.cost + ' pts</span>'
-              + '</div>';
-      }
-      html += '</div>';
-      const col = document.createElement("div");
-      col.className = "cls " + key;
-      col.innerHTML = html;
-      roster.appendChild(col);
-    }
-
-    document.getElementById("default-text").innerHTML =
-      '<b>Default class</b> — anything not listed, fists, or no weapon: armor <b>' + esc(DEFAULT_CLASS.tiers) + '</b>, perks '
-      + DEFAULT_CLASS.perks.map(esc).join(" + ") + ', weapon swapped for a <b>' + esc(DEFAULT_CLASS.weapon) + '</b>.';
-
-    const tbody = document.querySelector("#armor-table tbody");
-    tbody.innerHTML = "";
-    for (const t of Object.keys(ARMOR)) {
-      const [head, chest, legs] = ARMOR[t];
-      tbody.innerHTML += '<tr><td class="t">T' + esc(t) + '</td><td>' + esc(head) + '</td><td>' + esc(chest) + '</td><td>' + esc(legs) + '</td></tr>';
-    }
-
-    document.getElementById("modio-link").href = SITE.modio;
-    const discord = document.getElementById("discord-link");
-    if (SITE.discord) { discord.href = SITE.discord; discord.style.display = "inline"; }
-    document.getElementById("footer").textContent = "ProWeapons / ProClasses · " + SITE.serverName + " · " + SITE.version + " · " + SITE.updated;
-  }
-  render();
-</script>
 </body>
 </html>
