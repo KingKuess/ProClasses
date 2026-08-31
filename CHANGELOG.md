@@ -4,11 +4,6 @@
 
 First Kungle-specific weapon tuning on top of the recovered promod values:
 
-- **New: legacy class support.** A separate server actor
-  (`BP_ProClassesLegacy`) understands the old cswic class-container
-  format, so servers can run their existing `*_Class` files with this
-  mod via a `[ProClassesLegacy]` config section. Inactive unless
-  configured; The Kungle does not use it.
 - **New: server-configurable armory roster.** The "Server Classes"
   suggestions can be overridden per server (`ArmoryClasses/ArmoryNames/
   ArmoryWeaponIDs` ini lines) or hidden entirely (`HideServerClasses=1`).
