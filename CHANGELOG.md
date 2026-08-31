@@ -4,6 +4,12 @@
 
 First Kungle-specific weapon tuning on top of the recovered promod values:
 
+- **New: legacy class support.** A separate server actor
+  (`BP_ProClassesLegacy`) understands the old cswic class-container
+  format, so servers can run their existing `*_Class` files with this
+  mod via a `[ProClassesLegacy]` config section. Inactive unless
+  configured; The Kungle does not use it.
+
 - **Partisan** — stab vs T3 armor: **60 to the head, 40 to the torso** (was
   55 / 50; T3 legs drop to 30 as a side effect). Reward headshots on Vanguards.
 - **Greatsword** — alt-grip stab combos **+25 ms** slower (combo windup
