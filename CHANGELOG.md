@@ -1,13 +1,21 @@
 # ProClasses changelog
 
-## 1.0.0 — 2026-08-30
-
-First Kungle-specific weapon tuning on top of the recovered promod values:
+## 1.0.1 — unreleased
 
 - **New: server-configurable armory roster.** The "Server Classes"
   suggestions can be overridden per server (`ArmoryClasses/ArmoryNames/
   ArmoryWeaponIDs` ini lines) or hidden entirely (`HideServerClasses=1`).
   Without those lines nothing changes.
+- **New: third-party class packs.** Class-defs can live in any mounted mod,
+  not just this one — a server points its `[ProClasses]` lines at them and
+  they run on the same enforcement actor. First pack: Cashmate's 12
+  classmod classes, converted from his cswic containers and delivered to
+  him for his own weapon mod.
+
+## 1.0.0 — 2026-08-30
+
+First Kungle-specific weapon tuning on top of the recovered promod values:
+
 
 - **Partisan** — stab vs T3 armor: **60 to the head, 40 to the torso** (was
   55 / 50; T3 legs drop to 30 as a side effect). Reward headshots on Vanguards.
