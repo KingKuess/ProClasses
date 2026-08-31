@@ -9,6 +9,10 @@ First Kungle-specific weapon tuning on top of the recovered promod values:
   format, so servers can run their existing `*_Class` files with this
   mod via a `[ProClassesLegacy]` config section. Inactive unless
   configured; The Kungle does not use it.
+- **New: server-configurable armory roster.** The "Server Classes"
+  suggestions can be overridden per server (`ArmoryClasses/ArmoryNames/
+  ArmoryWeaponIDs` ini lines) or hidden entirely (`HideServerClasses=1`).
+  Without those lines nothing changes.
 
 - **Partisan** — stab vs T3 armor: **60 to the head, 40 to the torso** (was
   55 / 50; T3 legs drop to 30 as a side effect). Reward headshots on Vanguards.
