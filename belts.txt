@@ -1,0 +1,10 @@
+ALL
+
+Champion belt whitelist (ProWeapons v1.0.2+). Only the FIRST line matters:
+space-separated PlayFab IDs (16 hex chars, uppercase), and/or the word ALL to
+give everyone a belt. Everything after the first blank line is ignored by the
+mod. ALL is currently set for pre-release testing - replace it with the real
+ID list before v1.0.2 ships.
+
+Example first line:
+A93D46A74B296EDD 1234567890ABCDEF
