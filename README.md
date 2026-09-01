@@ -9,6 +9,21 @@
 - `make-motd-png.ps1` — regenerates `motd.png` from `index.html` with headless
   Chrome/Edge at the panel width (860px), cropped to the card.
 
+## Weapon values page
+
+`weapons.html` is GENERATED — do not edit it by hand. It is built from the
+recovered value data (stock CDO dump + promod deltas + `kungle_overrides.json`)
+by `Mordhau\PyTools\make_weapons_page.py`. After any weapon tuning:
+
+1. Run `python make_weapons_page.py` (no editor needed) — it writes both the
+   site copy and the repo copy.
+2. Commit and push. Bump `VERSION` in the script when the mod version changes.
+
+Class assignment, banned flags and the roster live in the `ROSTER` table at
+the top of that script. The per-weapon "discuss" links point at GitHub
+Discussions — enable Discussions on the repo (Settings > Features) for them
+to work.
+
 ## Server MOTD
 
 In the server's `Game.ini`:
