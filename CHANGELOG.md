@@ -1,6 +1,6 @@
 # ProClasses changelog
 
-## 1.0.1 — unreleased
+## 1.0.3 — unreleased
 
 - **Battle Axe moved to Rat** (2/1/1 with the firepot kit; was Vanguard).
 - **Estoc** — combos **+25 ms** on every attack, both grips.
@@ -8,6 +8,22 @@
 - **Partisan** — back to vanilla damage (the T3 60-head/40-torso experiment
   is reverted) and the stab **can combo again** (promod had removed it).
 
+## 1.0.2 — 2026-09-01
+
+- **Pugga belt** — champion's cosmetic belt, worn by The Kungle's reigning
+  PUG champions.
+
+## 1.0.1 — 2026-08-31
+
+- **Fix: empty first slot no longer keeps the secondary.** Spawning with an
+  empty slot 1 and a weapon in slot 2 gave the Default class but left the
+  secondary in your inventory. The carried weapon is now removed like any
+  other secondary; the greatsword replaces it.
+- **Fix: the round-start drop exploit.** You can no longer drop your weapon
+  while the class-swap window is open (grace period + a few seconds into the
+  round), so dropping to grab the Default 3/3/3 kit and looting your weapon
+  back no longer works. Once the swap window closes, dropping behaves
+  normally again — and never re-classes you.
 - **New: server-configurable armory roster.** The "Server Classes"
   suggestions can be overridden per server (`ArmoryClasses/ArmoryNames/
   ArmoryWeaponIDs` ini lines) or hidden entirely (`HideServerClasses=1`).
