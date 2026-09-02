@@ -24,6 +24,15 @@ the top of that script. The per-weapon "discuss" links point at GitHub
 Discussions — enable Discussions on the repo (Settings > Features) for them
 to work.
 
+## Server config reference
+
+`kungle-Game.ini` is The Kungle's live server `Game.ini` with secrets
+redacted (server/admin/RCON passwords, the StatTracker webhook, admin IDs).
+It shows exactly how the mods, `[ProClasses]`, `[CompModifiers]`,
+`WeaponsConfig` and `[RemovalMod]` sections fit together — usable as a
+starting point for another ProClasses server. Keep it in sync when the live
+config changes.
+
 ## Server MOTD
 
 In the server's `Game.ini`:
