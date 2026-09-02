@@ -28,7 +28,11 @@ to work.
 
 `kungle-Game.ini` is The Kungle's live server `Game.ini` with secrets
 redacted (server/admin/RCON passwords, the StatTracker webhook, admin IDs).
-It shows exactly how the mods, `[ProClasses]`, `[CompModifiers]`,
+`example-support-only-Game.ini` is a generic template enforcing ONLY the
+1/3/1 Support class: six weapon lines, no `Default` line (so every other
+loadout stays fully custom), armory suggestions trimmed to match, and
+ChangeMe placeholders for all credentials.
+The Kungle file shows exactly how the mods, `[ProClasses]`, `[CompModifiers]`,
 `WeaponsConfig` and `[RemovalMod]` sections fit together — usable as a
 starting point for another ProClasses server. Keep it in sync when the live
 config changes.
