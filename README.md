@@ -37,6 +37,86 @@ The Kungle file shows exactly how the mods, `[ProClasses]`, `[CompModifiers]`,
 starting point for another ProClasses server. Keep it in sync when the live
 config changes.
 
+### Remote configuration (ConfigURL, 2026-09-14)
+
+Instead of keeping the `[ProClasses]` block in Game.ini, a server can point
+ProClasses at a file hosted on GitHub (or any plain-text URL):
+
+```ini
+[ProClasses]
+ConfigURL=https://raw.githubusercontent.com/KingKuess/ProClasses/main/proclasses.ini
+ConfigPollSeconds=60      ; optional re-fetch interval, default 60
+```
+
+`bAllowHttpRequests=True` must be set under `[/Script/Mordhau.MordhauGameSession]`.
+Game.ini is only read at boot, so restart once after adding the line (stop the
+server first: Mordhau rewrites Game.ini on shutdown and can drop a line that
+was added while it ran).
+
+How it applies:
+
+- The server fetches the file at every map start and every `ConfigPollSeconds`
+  and caches it in `Saved/PlayerFiles/ProClassesRemote.txt`.
+- The cache is applied at the **next** map load. Rule of thumb: push to
+  GitHub, wait about five minutes (GitHub's raw CDN can serve the old file
+  for that long), then change map.
+- With `ConfigURL` set the ini `[ProClasses]` block is ignored, so everything
+  you want (weapon lines, `Default`, `Armory*`, `HideServerClasses`,
+  `WeaponSpeeds*`) must be in the file. Keep the ini block anyway: it is the
+  fallback for the first map after a boot, before any cache exists.
+- Without `ConfigURL` nothing changes: the ini is read exactly as before.
+
+The file is INI-style. `;` and `#` start comments. [proclasses.ini](proclasses.ini)
+is The Jungle's live file.
+
+```ini
+[ProClasses]
+; identical keys to the Game.ini section
+Default=/ProWeapons/Classes/BP_Class_Default.BP_Class_Default_C
+BP_Zweihander_NC_C=/ProWeapons/Classes/BP_Class_Support.BP_Class_Support_C
+BP_Maul_NC_C=Bruiser            ; a class defined in [Classes] below
+
+[Classes]
+; inline class definitions: any BP_ProClassDef variable by name
+; HeadTier/ChestTier/LegTier, HeadID/ChestID/LegID, Perk1..Perk5 (-1 = unused),
+; Gear1/Gear2, WeaponID (>0 replaces the held weapon), LoadoutWeaponID
+Bruiser=HeadTier:2,ChestTier:2,LegTier:1,HeadID:5,ChestID:3,LegID:11,Perk1:0,Perk2:21,Gear1:27
+
+[Weapons]
+; <donor asset>.<attack>.<field>=<value>, applied to the ProWeapons donor
+; blueprints before the removal mod copies them (WeaponsConfig lines unchanged)
+BP_NACL_Estoc.StrikeAttack.ComboWindupIncrease=0.2
+BP_NACL_Longsword.StabAttack.Damage=65,55,45,34
+BP_NACL_Partisan.StabAttack.bCanCombo=1
+BP_NACL_Maul.StrikeAttack.TurnCaps=253.75,177.625
+```
+
+`[Weapons]` details:
+
+- Attacks: `StrikeAttack`, `SecondStrikeAttack`, `StabAttack`, `SecondStabAttack`.
+- Fields (the ones the removal mod replicates to clients): `Windup`,
+  `Release`, `ComboWindupIncrease`, `MissComboExtraWindupIncrease`,
+  `FeintLockOut`, `FlinchSpeedModifier`, `FlinchDurationModifier`,
+  `StaminaDrain`, `ExtraStaminaDrainVsHeldBlock`, `MissStaminaCost`,
+  `HitStaminaReward`, `MissRecovery`, `FeintCost`, `MorphCost`, `bCanCombo`,
+  `bCanMissCombo`, `bStopOnHit`, `Damage`, `HeadBonus`, `LegBonus` (four
+  comma-separated numbers, armor tiers 0-3), `TurnCaps` (two numbers).
+  Chamber costs are owned by the removal mod and cannot be set here.
+- Donor names resolve under `/ProWeapons/Weapons/`; set `WeaponRoot=` in
+  `[ProClasses]` for another mount, or use a full `/Mod/Path/BP_X.BP_X_C`.
+- Deleting a line reverts the field at the next map load (the server keeps
+  `Saved/PlayerFiles/ProClassesBaseline.txt` for that).
+- Known quirk: right after a value change, players who spawn in the first
+  seconds of the map can see the old swing timing on their own screen for
+  that one life (the server already uses the new value). Respawning fixes it.
+
+Log lines to look for (server log, `[ProClasses] remote ...`):
+`ConfigURL set but no cache for it yet` (first map after boot),
+`remote fetch sent=true <url>`, `remote config fetched (N lines incl. stamp)`,
+`remote config APPLIED from cache (N lines): K keys, C inline classes, W weapon patches`,
+`weapon patch <key> = <new> (was <old>)`, `weapon baseline restored <key> = <old>`,
+`remote fetch FAILED, http code N`.
+
 ## Server MOTD
 
 In the server's `Game.ini`:

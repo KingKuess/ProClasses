@@ -1,5 +1,18 @@
 # ProClasses changelog
 
+## Remote configuration — 2026-09-14
+
+- **New: GitHub-hosted config.** `ConfigURL=<raw url>` under `[ProClasses]`
+  makes the server read its whole `[ProClasses]` section, inline class
+  definitions (`[Classes]`) and weapon value patches (`[Weapons]`) from a
+  hosted file. Changes apply on the next map change, no restart, no
+  repackage. Servers without the line are unchanged. See the README.
+- **New: `[Weapons]` value patches** on the ProWeapons donor blueprints
+  (windups, damage, combos, ... the fields the removal mod replicates), with
+  automatic revert when a line is removed.
+- **New: inline class definitions** by name, so a new archetype needs no
+  repackage.
+
 ## 1.0.3 — unreleased
 
 - **Battle Axe moved to Rat** (2/1/1 with the firepot kit; was Vanguard).
