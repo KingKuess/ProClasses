@@ -102,6 +102,9 @@ BP_NACL_Maul.StrikeAttack.TurnCaps=253.75,177.625
   `bCanMissCombo`, `bStopOnHit`, `Damage`, `HeadBonus`, `LegBonus` (four
   comma-separated numbers, armor tiers 0-3), `TurnCaps` (two numbers).
   Chamber costs are owned by the removal mod and cannot be set here.
+- Timing values must stay **below 1.0 s**. The game does not apply a
+  `Release` of 1.0 or more (verified live 2026-09-15: 1.0 had no effect,
+  0.999 worked). Assume the same for `Windup` and the other timings.
 - Donor names resolve under `/ProWeapons/Weapons/`; set `WeaponRoot=` in
   `[ProClasses]` for another mount, or use a full `/Mod/Path/BP_X.BP_X_C`.
 - Deleting a line reverts the field at the next map load (the server keeps
