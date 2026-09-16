@@ -1,4 +1,4 @@
-B0ECC4B3EB5E6DAE
+B0ECC4B3EB5E6DAE 84CACF3CD41A0817
 
 Champion belt whitelist (ProWeapons v1.0.2+). Only the FIRST line matters:
 space-separated PlayFab IDs (16 hex chars, uppercase), and/or the word ALL to
