@@ -1,0 +1,7 @@
+9D49F0D9F0389544
+
+Champion cape whitelist (ProWeapons). Only the FIRST line matters: PlayFab IDs
+separated by spaces (16 hex characters, upper case), or the single word ALL to
+give the cape to everyone. Everything below the first line is ignored by the mod.
+Clients fetch this file when a map loads; GitHub's raw CDN caches it for about
+five minutes, so a change takes effect on the next map after that.
