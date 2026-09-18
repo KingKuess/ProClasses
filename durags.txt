@@ -1,4 +1,4 @@
-9D49F0D9F0389544
+9D49F0D9F0389544 B0ECC4B3EB5E6DAE 9AA75D583154ED3C
 
 Silky Durag whitelist (ProWeapons). Only the FIRST line matters: space-separated uppercase PlayFab IDs, or ALL.
 Edit, commit, push. No repack, no server restart. Takes effect on the next map load (raw CDN may add a few minutes).
