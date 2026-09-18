@@ -62,7 +62,7 @@ How it applies:
   for that long), then change map.
 - With `ConfigURL` set the ini `[ProClasses]` block is ignored, so everything
   you want (weapon lines, `Default`, `Armory*`, `HideServerClasses`,
-  `WeaponSpeeds*`) must be in the file. Keep the ini block anyway: it is the
+  `WeaponSpeeds*`, `DodgeStaminaCost`, `DodgeDuration`) must be in the file. Keep the ini block anyway: it is the
   fallback for the first map after a boot, before any cache exists.
 - Without `ConfigURL` nothing changes: the ini is read exactly as before.
 
@@ -112,6 +112,26 @@ BP_NACL_Maul.StrikeAttack.TurnCaps=253.75,177.625
 - Known quirk: right after a value change, players who spawn in the first
   seconds of the map can see the old swing timing on their own screen for
   that one life (the server already uses the new value). Respawning fixes it.
+
+### Dodge perk (2026-09-17)
+
+The Dodge perk's numbers are not on the perk; they are two fields on the
+character. ProClasses writes them onto every pawn (all players, classed or
+not), on the server and on each client so the dodge check and the animation
+length agree:
+
+```ini
+[ProClasses]
+DodgeStaminaCost=15   ; optional. Default WITH ProClasses running = 15 (stock 10)
+DodgeDuration=0.35    ; optional, seconds. Unset or 0 = stock 0.35
+```
+
+- Servers get the 15 stamina dodge with no ini change. Write
+  `DodgeStaminaCost=10` to get the stock cost back.
+- Both keys work in Game.ini and in the hosted file (with `ConfigURL` set,
+  only the hosted file is read, like every other `[ProClasses]` key).
+- Server log line at map start: `[ProClasses] dodge: stamina cost N (stock 10),
+  duration D (0 = stock 0.35 s)`.
 
 Log lines to look for (server log, `[ProClasses] remote ...`):
 `ConfigURL set but no cache for it yet` (first map after boot),

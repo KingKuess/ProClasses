@@ -1,5 +1,12 @@
 # ProClasses changelog
 
+## Dodge perk — 2026-09-17 (unreleased)
+
+- **Dodge costs 15 stamina** (stock 10) on every ProClasses server, no ini
+  change needed. Optional `DodgeStaminaCost=<int>` and `DodgeDuration=<s>`
+  keys under `[ProClasses]` (Game.ini or the hosted file) override it; see
+  the README.
+
 ## Remote configuration — 2026-09-14
 
 - **New: GitHub-hosted config.** `ConfigURL=<raw url>` under `[ProClasses]`
