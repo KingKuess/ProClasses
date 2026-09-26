@@ -7,7 +7,7 @@
   keeps parrying for the first 0.15 s of a riposte). Every shield on foot,
   stock and removal-mod `_NC` classes alike. No key = stock. See the README.
 
-## Dodge perk — 2026-09-17 (unreleased)
+## Dodge perk — 2026-09-17 (shipped in the 2026-09-18 build)
 
 - **Dodge costs 15 stamina** (stock 10) on every ProClasses server, no ini
   change needed. Optional `DodgeStaminaCost=<int>` and `DodgeDuration=<s>`
