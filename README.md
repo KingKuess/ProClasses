@@ -217,9 +217,3 @@ Repo **Settings → Pages → Build and deployment**: Source "Deploy from a
 branch", branch `main`, folder `/ (root)`. Served at
 `https://kingkuess.github.io/ProClasses/`; every push to `main` redeploys
 (allow a minute, then hard-refresh).
-
-## DuragWearers (2026-09-26)
-
-`[ProClasses] DuragWearers=<PlayFabID,PlayFabID,...>` - players who spawn with the Silky Durag on any class whose
-HeadTier is 1 (Support on the Jungle). Mordhau replaces any client-submitted mod head with a random tier-1 head
-before the class apply, so the server assigns the durag instead. Visibility to others is still gated by durags.txt.
