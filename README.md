@@ -78,7 +78,7 @@ BP_Maul_NC_C=Bruiser            ; a class defined in [Classes] below
 
 [Classes]
 ; inline class definitions: any BP_ProClassDef variable by name
-; HeadTier/ChestTier/LegTier, HeadID/ChestID/LegID, Perk1..Perk5 (-1 = unused),
+; HeadTier/ChestTier/LegTier, HeadID/ChestID/LegID, Perk1..Perk8 (-1 = unused; slots 6-8 since 2026-09-26),
 ; Gear1/Gear2, WeaponID (>0 replaces the held weapon), LoadoutWeaponID
 Bruiser=HeadTier:2,ChestTier:2,LegTier:1,HeadID:5,ChestID:3,LegID:11,Perk1:0,Perk2:21,Gear1:27
 
