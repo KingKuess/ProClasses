@@ -1,5 +1,12 @@
 # ProClasses changelog
 
+## Shield active parry switch — 2026-09-26 (unreleased)
+
+- **New: `ShieldActiveParry=0`** (and optional `ShieldActiveParryWindow=<s>`)
+  under `[ProClasses]` turns off the shield-riposte active parry (the shield
+  keeps parrying for the first 0.15 s of a riposte). Every shield on foot,
+  stock and removal-mod `_NC` classes alike. No key = stock. See the README.
+
 ## Dodge perk — 2026-09-17 (unreleased)
 
 - **Dodge costs 15 stamina** (stock 10) on every ProClasses server, no ini

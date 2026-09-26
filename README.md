@@ -133,6 +133,43 @@ DodgeDuration=0.35    ; optional, seconds. Unset or 0 = stock 0.35
 - Server log line at map start: `[ProClasses] dodge: stamina cost N (stock 10),
   duration D (0 = stock 0.35 s)`.
 
+### Shield active parry (2026-09-26)
+
+Mordhau's shields keep parrying during a riposte: for the first 0.15 s of a
+shield user's riposte windup the shield model still acts as a parry, so an
+attack that would have traded or interrupted the riposte is blocked instead
+(Patch #16 "shield models now act as blocking colliders during ripostes"; the
+game's own name for the knob is `ActiveParryWindow`, with a 20 stamina cost
+and the chamber/active-parry angle limits beside it). Non-shield weapons have
+the same field but no shield collider, so only shield users express it.
+ProClasses can switch it off or shorten it per server:
+
+```ini
+[ProClasses]
+ShieldActiveParry=0            ; 0 = off (window 0), 1 = explicit stock 0.15 s
+;ShieldActiveParryWindow=0.075 ; optional exact window in seconds, overrides the flag
+```
+
+- Neither key present = ProClasses never touches it (stock behaviour).
+- Applies to every shield (buckler, heater, kite, targe, pavise, round) on
+  foot; mounted (horse) shield motions are left alone.
+- Works with the comp removal mod's no-chamber (`_NC`) shields too: those use
+  their own motion classes, which ProClasses patches directly.
+- Takes effect for weapons spawned after the map starts (i.e. everyone's next
+  life); `=1` after `=0` restores stock at the next map change without a
+  server restart.
+- Both keys work in Game.ini and in the hosted file. Server log lines:
+  `[ProClasses] shield active parry: window W (...)` at map start and
+  `[ProClasses] shield active parry applied: ActiveParryWindow=W s, shield
+  profiles=NoAP|stock` once the writes are done.
+
+How it works (for the curious): the pak ships copies of the twelve
+shield-holder attack motions with the window baked to 0 plus three animation
+profiles routing to them; when the switch is on, BP_ProClasses re-points the
+six stock shield classes at those profiles and writes the configured window
+onto the motion class defaults (a plain runtime write on the stock motion
+classes cannot reach new attacks, which is why the copies exist).
+
 Log lines to look for (server log, `[ProClasses] remote ...`):
 `ConfigURL set but no cache for it yet` (first map after boot),
 `remote fetch sent=true <url>`, `remote config fetched (N lines incl. stamp)`,
