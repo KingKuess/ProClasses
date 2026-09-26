@@ -1,11 +1,17 @@
 # ProClasses changelog
 
-## Shield active parry switch — 2026-09-26 (unreleased)
+## Shield active parry switch + eight perk slots — 2026-09-26 (live 2026-09-26)
 
 - **New: `ShieldActiveParry=0`** (and optional `ShieldActiveParryWindow=<s>`)
   under `[ProClasses]` turns off the shield-riposte active parry (the shield
   keeps parrying for the first 0.15 s of a riposte). Every shield on foot,
   stock and removal-mod `_NC` classes alike. No key = stock. See the README.
+- Class definitions carry **eight perk slots** (`Perk1`..`Perk8`, inline
+  classes too). Existing class-defs are unchanged.
+- The Jungle's hosted config now defines Rat inline: one-handers only, 2/2/2,
+  Brawler/Stun/Second Wind/Dodge/Acrobat/Bloodlust/Fury/Rat, buckler + firepot;
+  Eveningstar and Battle Axe moved to Vanguard. The pak's BP_Class_Rat is
+  unchanged for other servers.
 
 ## Dodge perk — 2026-09-17 (shipped in the 2026-09-18 build)
 
