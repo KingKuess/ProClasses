@@ -1,13 +1,16 @@
 # ProClasses changelog
 
-## Class selector — 2026-10-28 (built, PIE-verified, not yet packaged)
+## Class selector — 2026-10-29 (built, PIE-verified, not yet packaged)
 
 - **New: in-game class selector.** `ClassSelect=1` under `[ProClasses]` plus
   `[Selector]` / `[Selector.<Card>]` sections (cards, weapons per card, rows of
-  trade-off buttons with `Armor:` / `Perk:` / `Gear:` effects) put a class panel
-  on the B key in place of the loadout list; the spawn screen's loadout button
-  opens the same panel. Picks apply on the next spawn; the server swaps in the
-  chosen weapon when the loadout holds something else. Servers without the key
+  trade-off buttons with `Armor:` / `Perk:` / `Gear:` effects) replace the
+  loadout list with a mouse-driven class screen (banner cards with armor tiers,
+  perk icons and description; weapon and trade-off buttons) that opens on join,
+  on death and on B; Escape closes it, ARMORY opens the game's armory. Per-team
+  `Max` limits per card. Picks apply on the next spawn (at once in warmup); the
+  server swaps in the chosen weapon when the loadout holds something else and
+  keeps the player's own armor and skins where they fit. Servers without the key
   are unchanged. Grammar and ids: README "Class selector".
 - `selector-test.ini`: the live Jungle file plus a selector block, ready to
   copy over `proclasses.ini` for the live trial.

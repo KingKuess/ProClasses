@@ -177,15 +177,17 @@ Log lines to look for (server log, `[ProClasses] remote ...`):
 `weapon patch <key> = <new> (was <old>)`, `weapon baseline restored <key> = <old>`,
 `remote fetch FAILED, http code N`.
 
-### Class selector (2026-10-28, first build)
+### Class selector (2026-10-29)
 
-With `ClassSelect=1` the server stops relying on armory loadouts for class
-picks: **B** (the game's loadout key) opens a class panel instead of the
-loadout list, and the spawn screen's loadout button opens the same panel.
-Number keys pick a card, then a weapon, then one button per trade-off row;
-the pick closes the panel and applies on the next spawn (the server swaps in
-the chosen weapon if your loadout holds something else). Players who never
-pick are classed exactly as before (weapon lines, else `Default`).
+With `ClassSelect=1` the loadout list is replaced by a class screen (modelled on
+Team Objective's): it opens when you join, when you die and on **B**; Escape
+closes it; **ARMORY** opens the game's armory (your loadouts still provide your
+armor look and skins). One banner card per class shows armor tiers, perks and
+description; pick a card, a weapon and one button per trade-off row, then
+SELECT. The pick applies on your next spawn (at once in warmup); the server
+swaps in the chosen weapon if your loadout holds something else, keeping your
+own armor where the tier matches. Players who never pick are classed as before
+(weapon lines, else `Default`).
 
 ```ini
 [ProClasses]
@@ -205,6 +207,7 @@ Base=SelRat                  ; the class to start from: a [Classes] name or a /P
                              ; It is the "nothing chosen" state - no optional gear or perks in it.
 Description=Light one-hander in 2/2/2. Buckler or Dodge, firepot or Bloodlust.
 Weapons=4,23,17,25,22,8,63,2 ; weapons the player may pick (equipment ids, as ArmoryWeaponIDs)
+Max=-1                       ; per-team limit like Team Objective's MaxKnights: -1 none, 0 banned, N cap
 Choice1=Buckler|Dodge        ; one row of buttons; the player picks exactly one per row
 Choice1.1=Gear:61            ; what button 1 of row 1 does
 Choice1.2=Perk:17            ; what button 2 of row 1 does
@@ -216,17 +219,13 @@ Choice2.2=Perk:13
 Effects, comma separated: `Armor:H/C/L` (tiers head/chest/legs; the pieces
 come from the `Tier*IDs` tables), `Perk:<id>` (next free perk slot),
 `Gear:<id>` (next free gear slot), or any raw class-def field as `Field=value`.
-An empty effect (`Choice1.1=`) means "the base class as is". Works in Game.ini
-and in the hosted file alike. Worked example with the live Jungle classes:
+An empty effect (`Choice1.1=`) means "the base class as is". Cards show
+"n / Max on your team" and a full card cannot be picked. Works in Game.ini and
+in the hosted file alike. Worked example with the live Jungle classes:
 [selector-test.ini](selector-test.ini).
 
 Ids: perks 0 Brawler, 1 Acrobat, 2 Fury, 7 Rat, 12 Second Wind, 13 Bloodlust,
 17 Dodge, 21 Stun; gear 27 firepot, 56 cleaver, 61 buckler.
-
-Known limits of the first build: the panel is keyboard only (no mouse);
-the weapon you pick spawns with its default look unless your own loadout
-already holds that weapon (then your skin stays); the pick applies on the
-next spawn.
 
 ## Server MOTD
 
