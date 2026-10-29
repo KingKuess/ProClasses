@@ -177,6 +177,57 @@ Log lines to look for (server log, `[ProClasses] remote ...`):
 `weapon patch <key> = <new> (was <old>)`, `weapon baseline restored <key> = <old>`,
 `remote fetch FAILED, http code N`.
 
+### Class selector (2026-10-28, first build)
+
+With `ClassSelect=1` the server stops relying on armory loadouts for class
+picks: **B** (the game's loadout key) opens a class panel instead of the
+loadout list, and the spawn screen's loadout button opens the same panel.
+Number keys pick a card, then a weapon, then one button per trade-off row;
+the pick closes the panel and applies on the next spawn (the server swaps in
+the chosen weapon if your loadout holds something else). Players who never
+pick are classed exactly as before (weapon lines, else `Default`).
+
+```ini
+[ProClasses]
+ClassSelect=1
+
+[Classes]
+SelRat=HeadTier:2,ChestTier:2,LegTier:2,HeadID:5,ChestID:3,LegID:2,Perk1:0,Perk2:21,Perk3:12,Perk4:1,Perk5:2,Perk6:7
+
+[Selector]
+Classes=Rat,Frontline        ; the cards, left to right; each has a section below
+TierHeadIDs=0,22,5,10        ; armor pieces used when a choice changes a tier (tiers 0..3)
+TierChestIDs=0,7,3,4
+TierLegIDs=7,11,2,4
+
+[Selector.Rat]
+Base=SelRat                  ; the class to start from: a [Classes] name or a /ProWeapons/Classes/... path.
+                             ; It is the "nothing chosen" state - no optional gear or perks in it.
+Description=Light one-hander in 2/2/2. Buckler or Dodge, firepot or Bloodlust.
+Weapons=4,23,17,25,22,8,63,2 ; weapons the player may pick (equipment ids, as ArmoryWeaponIDs)
+Choice1=Buckler|Dodge        ; one row of buttons; the player picks exactly one per row
+Choice1.1=Gear:61            ; what button 1 of row 1 does
+Choice1.2=Perk:17            ; what button 2 of row 1 does
+Choice2=Firepot|Bloodlust
+Choice2.1=Gear:27
+Choice2.2=Perk:13
+```
+
+Effects, comma separated: `Armor:H/C/L` (tiers head/chest/legs; the pieces
+come from the `Tier*IDs` tables), `Perk:<id>` (next free perk slot),
+`Gear:<id>` (next free gear slot), or any raw class-def field as `Field=value`.
+An empty effect (`Choice1.1=`) means "the base class as is". Works in Game.ini
+and in the hosted file alike. Worked example with the live Jungle classes:
+[selector-test.ini](selector-test.ini).
+
+Ids: perks 0 Brawler, 1 Acrobat, 2 Fury, 7 Rat, 12 Second Wind, 13 Bloodlust,
+17 Dodge, 21 Stun; gear 27 firepot, 56 cleaver, 61 buckler.
+
+Known limits of the first build: the panel is keyboard only (no mouse);
+the weapon you pick spawns with its default look unless your own loadout
+already holds that weapon (then your skin stays); the pick applies on the
+next spawn.
+
 ## Server MOTD
 
 In the server's `Game.ini`:
