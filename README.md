@@ -177,6 +177,36 @@ Log lines to look for (server log, `[ProClasses] remote ...`):
 `weapon patch <key> = <new> (was <old>)`, `weapon baseline restored <key> = <old>`,
 `remote fetch FAILED, http code N`.
 
+### No chained miss combos (2026-10-30)
+
+Stock Mordhau lets a weapon with `bCanMissCombo` combo out of a missed swing
+again and again. With this switch a player may still combo out of ONE miss,
+but that combo swing behaves like a no-miss-combo weapon: if it misses too,
+the player drops into the weapon's normal miss recovery instead of chaining
+a third swing. A combo after a HIT is untouched, and so is every weapon that
+cannot miss-combo in the first place (promod style values).
+
+```ini
+[ProClasses]
+MissCombo=1       ; any value > 0 enables the rule. Absent or 0 = stock behaviour
+;MissComboLog=1   ; optional: one log line per affected swing (server and client)
+```
+
+- Mechanism: every swing is its own attack motion with a private copy of the
+  weapon's attack values; the actor clears `bCanMissCombo` on that copy only
+  while the current swing is a combo coming directly from a miss (the game's
+  own `IsComboFromMiss` flag). Weapon classes, their defaults and the comp
+  removal mod's copied/replicated stats are never written, so the two mods do
+  not fight: the removal mod decides which weapons can miss-combo at all, this
+  rule only caps the chain at one.
+- Runs on the server for every player every tick and on each client for its
+  own pawn, so the owning client predicts the refusal instead of being
+  corrected by the server.
+- Server log line at map start: `[ProClasses] miss combo rule: N (0 = off; 1 =
+  a combo out of a miss cannot miss-combo again)`.
+- Works in Game.ini and in the hosted file like every other `[ProClasses]`
+  key; takes effect at the next map load.
+
 ### Class selector (2026-10-29)
 
 With `ClassSelect=1` a class screen opens after you confirm a loadout in the

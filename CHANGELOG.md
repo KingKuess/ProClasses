@@ -1,5 +1,15 @@
 # ProClasses changelog
 
+## No chained miss combos — 2026-10-30 (built, PIE-verified, not yet packaged)
+
+- **New: `MissCombo=1`** under `[ProClasses]` (Game.ini or the hosted file).
+  A player can still combo out of one missed swing, but that combo swing
+  cannot miss-combo again: a second miss in a row puts the player into the
+  weapon's miss recovery, like a no-miss-combo weapon. Hits and weapons that
+  cannot miss-combo at all are untouched; nothing is written to weapon classes
+  or the removal mod's stats. Optional `MissComboLog=1` logs each affected
+  swing. No key = stock behaviour. See the README.
+
 ## Class selector — 2026-10-29 (built, PIE-verified, not yet packaged)
 
 - **New: in-game class selector.** `ClassSelect=1` under `[ProClasses]` plus
