@@ -229,28 +229,38 @@ SlowLookSmoothingMultiplier=0    ; runs on every client: m.SlowLookSmoothingMult
   (-1 = unset), SlowLookSmoothingMultiplier set=... value=...`; clients log
   `client cvars applied` / `client cvars restored`.
 
-### Game.ini overrides from the hosted file (2026-10-30)
+### Overriding other mods from the hosted file (2026-10-30)
 
 Any section in the hosted file that is not one of ProClasses' own
-(`[ProClasses]`, `[Classes]`, `[Weapons]`, `[Selector...]`) is pushed line by
-line into the server's config memory at map start, exactly as if it stood in
-Game.ini. This is how a hosted file can change another mod's settings, for
-example the comp removal mod's stab early release:
+(`[ProClasses]`, `[Classes]`, `[Weapons]`, `[Selector...]`) is treated as a
+foreign section. When its name is a class path, ProClasses writes each line
+onto that class's default object and onto every live actor of that class on
+the server, 3 s and again 12 s into every map, and for each `Config<X>` key it
+then calls the actor's own `Update<X>` function so the mod re-applies and
+replicates the value. This is how the comp removal mod's stab early release
+is overridden without touching Game.ini:
 
 ```ini
 [/Game/Mordhau/Maps/WeaponRemovalMap_VersionA/BP_ModificationActor_VersionA.BP_ModificationActor_VersionA_C]
 ConfigStabEarlyRelease=(A=0.25,B=1.0,C=0.25,D=1.0,E=0,F=0)
 ```
 
-- The value is read by the owning actor when it is next constructed: the same
-  map if that actor spawns after ProClasses (it does in `SpawnServerActorsOnMapLoad`
-  order on Kyle's servers), otherwise the next map.
-- Values stay in the server's config memory for the life of the process and the
-  engine may write them into `Saved/Config/WindowsServer/Game.ini` on shutdown.
-  Deleting a line from the hosted file therefore does not restore the old value
-  by itself; set the old value explicitly or edit Game.ini.
-- Server log: one `[ProClasses] config override: [section] key=value` line per
-  pushed line, then a count.
+- Value shapes: `(A=..,B=..,...)` up to six numbers fills a struct or vector
+  (written by memory layout, in the order given); `True`/`False` a bool; a
+  plain number a float or int (whichever the property is); anything else a
+  string. `Call=<FunctionName> [args]` runs a function by name on each live
+  actor instead of writing a property (useful where the mod's refresh function
+  is not named `Update<X>`, e.g. `Call=UpdateStrikeEalyRelease`).
+- A line present in both Game.ini and the hosted file ends up with the hosted
+  value (Game.ini loads at start, ProClasses writes over it every map). Removing
+  the hosted line restores the Game.ini value at the next server restart; to
+  revert without a restart, put the old value in the hosted file.
+- Server log: `[ProClasses] override: <key>=<value> written to <actor>; Update<X>() -> true/false`
+  per write, `override call <fn> on <actor> -> true/false` per `Call=` line.
+- Why not plain config: a Blueprint Config variable is read once when the class
+  loads (server start); spawned actors copy the class default, so writing the
+  config file or config memory later never reaches them. ProClasses still
+  mirrors the lines into config memory for anything that loads later.
 
 ### Class selector (2026-10-29)
 

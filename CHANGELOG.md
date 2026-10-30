@@ -7,9 +7,12 @@
   (`a.URO.ForceInterpolation 0` + `a.URO.DisableInterpolation 1`,
   `m.SlowLookSmoothingMultiplier <f>`) to every client; previous values are
   restored when the player leaves. Absent key = untouched.
-- **New: Game.ini pass-through.** Any non-ProClasses section in the hosted file
-  (e.g. the comp removal mod's actor section with `ConfigStabEarlyRelease=`) is
-  pushed into the server's config memory at map start. See the README.
+- **New: overriding other mods from the hosted file.** A section named after
+  another mod actor's class (e.g. the comp removal mod's
+  `BP_ModificationActor_VersionA_C` with `ConfigStabEarlyRelease=`) is written
+  onto that actor and its class default 3 s and 12 s into every map, and the
+  mod's own `Update<X>` refresh is called; `Call=<fn>` lines run a function by
+  name. See the README.
 
 ## No chained miss combos — 2026-10-30 (built, PIE-verified, not yet packaged)
 
