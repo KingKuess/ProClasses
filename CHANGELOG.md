@@ -1,5 +1,16 @@
 # ProClasses changelog
 
+## Client cvars + Game.ini overrides — 2026-10-30 (built, not yet packaged)
+
+- **New: `ForceDisableInterpolation=1`** and **`SlowLookSmoothingMultiplier=<f>`**
+  under `[ProClasses]` push the matching client console variables
+  (`a.URO.ForceInterpolation 0` + `a.URO.DisableInterpolation 1`,
+  `m.SlowLookSmoothingMultiplier <f>`) to every client; previous values are
+  restored when the player leaves. Absent key = untouched.
+- **New: Game.ini pass-through.** Any non-ProClasses section in the hosted file
+  (e.g. the comp removal mod's actor section with `ConfigStabEarlyRelease=`) is
+  pushed into the server's config memory at map start. See the README.
+
 ## No chained miss combos — 2026-10-30 (built, PIE-verified, not yet packaged)
 
 - **New: `MissCombo=1`** under `[ProClasses]` (Game.ini or the hosted file).

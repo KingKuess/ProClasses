@@ -210,6 +210,48 @@ MissCombo=1       ; any value > 0 enables the rule. Absent or 0 = stock behaviou
 - Works in Game.ini and in the hosted file like every other `[ProClasses]`
   key; takes effect at the next map load.
 
+### Client console variables (2026-10-30)
+
+The server can push two client settings to everyone who joins. Each is applied
+only when its key exists; absent keys leave the player's own settings alone.
+
+```ini
+[ProClasses]
+ForceDisableInterpolation=1      ; runs on every client: a.URO.ForceInterpolation 0
+                                 ;                        a.URO.DisableInterpolation 1
+SlowLookSmoothingMultiplier=0    ; runs on every client: m.SlowLookSmoothingMultiplier 0
+```
+
+- Applied once per map on each client as soon as the replicated values arrive;
+  the player's previous values are saved and written back when the actor ends
+  (map change, leaving the server), so nothing sticks after they leave.
+- Server log line at map start: `[ProClasses] client cvars: ForceDisableInterpolation=N
+  (-1 = unset), SlowLookSmoothingMultiplier set=... value=...`; clients log
+  `client cvars applied` / `client cvars restored`.
+
+### Game.ini overrides from the hosted file (2026-10-30)
+
+Any section in the hosted file that is not one of ProClasses' own
+(`[ProClasses]`, `[Classes]`, `[Weapons]`, `[Selector...]`) is pushed line by
+line into the server's config memory at map start, exactly as if it stood in
+Game.ini. This is how a hosted file can change another mod's settings, for
+example the comp removal mod's stab early release:
+
+```ini
+[/Game/Mordhau/Maps/WeaponRemovalMap_VersionA/BP_ModificationActor_VersionA.BP_ModificationActor_VersionA_C]
+ConfigStabEarlyRelease=(A=0.25,B=1.0,C=0.25,D=1.0,E=0,F=0)
+```
+
+- The value is read by the owning actor when it is next constructed: the same
+  map if that actor spawns after ProClasses (it does in `SpawnServerActorsOnMapLoad`
+  order on Kyle's servers), otherwise the next map.
+- Values stay in the server's config memory for the life of the process and the
+  engine may write them into `Saved/Config/WindowsServer/Game.ini` on shutdown.
+  Deleting a line from the hosted file therefore does not restore the old value
+  by itself; set the old value explicitly or edit Game.ini.
+- Server log: one `[ProClasses] config override: [section] key=value` line per
+  pushed line, then a count.
+
 ### Class selector (2026-10-29)
 
 With `ClassSelect=1` a class screen opens after you confirm a loadout in the
