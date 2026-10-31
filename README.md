@@ -181,11 +181,12 @@ Log lines to look for (server log, `[ProClasses] remote ...`):
 
 Stock Mordhau lets a weapon with `bCanMissCombo` combo out of a missed swing
 again and again. With this switch a player may still combo out of ONE miss,
-but that combo swing behaves like a no-miss-combo weapon: it is committed (no
-feint and no feint-to-parry out of it), and if it misses too the player drops
-into the weapon's normal miss recovery instead of chaining a third swing. A
-combo after a HIT is untouched, and so is every weapon that cannot miss-combo
-in the first place (promod style values).
+and that combo swing winds up normally (feints and feint-to-parry allowed as
+usual), but once it is released and misses too, the player drops into the
+weapon's miss recovery instead of chaining a third swing, and cannot parry out
+of that recovery, exactly like a no-miss-combo weapon. A combo after a HIT is
+untouched, and so is every weapon that cannot miss-combo in the first place
+(promod style values).
 
 ```ini
 [ProClasses]
@@ -196,9 +197,9 @@ MissCombo=1       ; any value > 0 enables the rule. Absent or 0 = stock behaviou
 - Mechanism: every swing is its own attack motion with a private copy of the
   weapon's attack values; while the current swing is a combo coming directly
   from a miss (the game's own `IsComboFromMiss` flag) the actor clears
-  `bCanMissCombo` on that copy, sets its `FeintCost` to 1000 (a plain feint
-  becomes unaffordable) and sets `bCanBlock=false` on the motion (a parry
-  cannot start from inside it, so no feint-to-parry). Weapon classes, their defaults and the comp
+  `bCanMissCombo` on that copy; once that swing is in recovery without a hit it
+  also sets `bCanBlock=false` on the motion, so no parry can start out of the
+  missed recovery. Nothing is written during the windup. Weapon classes, their defaults and the comp
   removal mod's copied/replicated stats are never written, so the two mods do
   not fight: the removal mod decides which weapons can miss-combo at all, this
   rule only caps the chain at one.
